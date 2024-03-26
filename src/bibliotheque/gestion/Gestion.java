@@ -157,7 +157,10 @@ public class Gestion {
         Exemplaire ex = new Exemplaire(mat,etat,louv.get(choix-1));
         lex.add(ex);
         System.out.println("exemplaire créé");
-        //TODO attribuer rayon
+        int choix2 = Utilitaire.choixListe(lrayon);
+        Rayon ray = lrayon.get(choix2 - 1);
+        ex.setRayon(ray);
+
     }
 
     private void gestOuvrages() {
@@ -214,19 +217,27 @@ public class Gestion {
                             do{
                                 choix=Utilitaire.choixListe(langues);
                                 if(choix==langues.size())break;
-                                ((DVD)o).getAutresLangues().add(langues.get(choix-1));//TODO vérifier unicité ou utiliser set et pas de doublon avec langue d'origine
+                                ((DVD)o).getAutresLangues().add(langues.get(choix-1));
+                                //-------------------------------------------------------------------
+                                if (!langues.get(choix - 1).equalsIgnoreCase(langue)) {
+                                    ((DVD) o).getAutresLangues().add(langues.get(choix - 1));
+                                }
                             }while(true);
                            System.out.println("sous-titres");
                             do{
                              choix=Utilitaire.choixListe(langues);
                              if(choix==langues.size())break;
-                             ((DVD)o).getSousTitres().add(langues.get(choix-1));//TODO vérifier unicité ou utiliser set
+                             ((DVD)o).getSousTitres().add(langues.get(choix-1));
+                             //------------------------------------------------------
+                                if (!((DVD)o).getSousTitres().contains(langue))
+                                    ((DVD)o).getSousTitres().add(langue);
                              }while(true);
                             ;break;
             }
            louv.add(o);
         System.out.println("ouvrage créé");
-        //TODO ajouter 1 auteur à la liste des auteurs
+        //---------------------------------------------
+        gestAuteurs();
     }
 
        private void gestAuteurs() {
