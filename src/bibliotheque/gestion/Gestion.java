@@ -7,10 +7,7 @@ import bibliotheque.utilitaires.LivreFactoryBeta;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static bibliotheque.utilitaires.Utilitaire.choixListe;
 
@@ -104,21 +101,63 @@ public class Gestion {
     }
 
     private void gestRestitution() {
-        //TODO lister exemplaires en location , choisir l'un d'entre eux, enregistrer sa restitution et éventuellement changer état
+
+        List<Exemplaire> ExLoc= new ArrayList<>();
+        for(Location l : lloc){
+            if(l.getDateRestitution()==null){
+                ExLoc.add(l.getExemplaire());
+            }
+        }
+        if(!(ExLoc.isEmpty())){
+            System.out.println("Exemplaire à retourner :");
+            Exemplaire exemp = ExLoc.get(choixListe(ExLoc)-1);
+            for(Location l : lloc){
+                if(exemp.hashCode() == (l.getExemplaire().hashCode())){
+                    l.setDateRestitution(LocalDate.now());
+                    System.out.println("l'exemplaire " + exemp.getMatricule()+" a été rendu.");
+                    break;
+                }
+            }
+            System.out.println("Changer l'état de l'exemplaire (o/n): ");
+            int choix;
+            do{
+                choix = sc.nextInt();
+                if(choix!=1 && choix!=2){
+                    System.out.println("erreur");
+                }
+            }
+            while (choix!=1 && choix!=2);
+            if(choix==1){
+                System.out.println("Entrez la nouvelle déscription de l'état de l'exemplaire");
+                String nouvelEtat = sc.nextLine();
+                for(Location l : lloc){
+                    if(exemp.hashCode() == (l.getExemplaire().hashCode())){
+                        l.getExemplaire().setDescriptionEtat(nouvelEtat);
+                        System.out.println("Etat changé.");
+                        break;
+                    }
+                }
+            }
+        }
+        else{
+            System.out.println("Aucun exemplaire loué.");
+        }
     }
 
     private void gestLocations() {
         int choix;
-        //TODO ne lister que les exemplaires libres et les trier par matricule
-        choix =choixListe(lex);
-        if(lex.get(choix).enLocation()){
+        List <Exemplaire>exlibre = new ArrayList<>();
+        for(Exemplaire e : lex){
+            if(!e.enLocation()){
+                exlibre.add(e);
+            }
+        }
+        exlibre.sort(Comparator.comparing(Exemplaire::getMatricule));
+        choix = choixListe(lex);
+        if (lex.get(choix).enLocation()) {
             System.out.println("exemplaire en location");
             return;
         }
-        Exemplaire ex = lex.get(choix-1);
-        choix=choixListe(llect);
-        Lecteur lec = llect.get(choix-1);
-        lloc.add(new Location(lec,ex));
     }
 
     private void gestLecteurs() {
@@ -148,17 +187,43 @@ public class Gestion {
     }
 
     private void gestRayons() {
+
         System.out.println("code ");
-        String code=sc.next();
+        String code = sc.next();
         System.out.println("genre ");
-        String genre=sc.next();
-        Rayon r = new Rayon(code,genre);
+        String genre = sc.next();
+        Rayon r = new Rayon(code, genre);
         System.out.println("rayon créé");
         lrayon.add(r);
-        int  choix = choixListe(lex);
-        r.addExemplaire(lex.get(choix-1));
-        //TODO attribuer par une boucle plusieurs exemplaires, les exemplaires sont triés par ordre de titre de l'ouvrage ,
-        //  ne proposer que les exemplaires qui ne sont pas dans déjà présents dans ce rayon et qui ne sont dans aucun autre rayon
+
+        List<Exemplaire> exdispo = new ArrayList<>();
+        for (Exemplaire ex : lex) {
+            if (ex.getRayon() == null) {
+                exdispo.add(ex);
+            }
+        }
+
+        exdispo.sort(Comparator.comparing(ex -> ex.getOuvrage().getTitre()));
+
+        System.out.println("Exemplaires dispo à attribuer pour ce rayon : ");
+        int count = 1;
+        for (Exemplaire ex : exdispo) {
+            System.out.println(count++ + ". Matricule: " + ex.getMatricule() + "/ Titre: " + ex.getOuvrage().getTitre());
+        }
+
+        System.out.println("Choisissez les exemplaire pour ce rayon (fin par 0) : ");
+        int rep;
+        do {
+            rep = sc.nextInt();
+            if (rep > 0 && rep <= exdispo.size()) {
+                Exemplaire exemplaireChoisi = exdispo.get(rep - 1);
+                exemplaireChoisi.setRayon(r);
+                r.addExemplaire(exemplaireChoisi);
+                System.out.println("Exemplaire attribué à ce rayon.");
+            } else if (rep != 0) {
+                System.out.println("Choix invalide.");
+            }
+        } while (rep != 0);
     }
 
     private void gestExemplaires() {
@@ -229,7 +294,6 @@ public class Gestion {
                             List<String> langues = new ArrayList<>(Arrays.asList("anglais","français","italien","allemand","fin"));
                             do{
                                 choix=Utilitaire.choixListe(langues);
-
                                 if(choix==langues.size())break;
                                 ((DVD)o).getAutresLangues().add(langues.get(choix-1));//TODO vérifier unicité ou utiliser set et pas de doublon avec langue d'origine
                             }while(true);
@@ -260,25 +324,41 @@ public class Gestion {
         System.out.println("ouvrage créé");
          choix = choixListe(laut);
         o.addAuteur(laut.get(choix-1));
-        //TODO attribuer auteurs par boucle, les auteur sont triés par ordre de nom et prénom,
-        // ne pas proposer un auteur déjà présent dans la liste des auteurs de cet ouvrage
+
+        laut.sort(Comparator.comparing(Auteur::getNom).thenComparing(Auteur::getPrenom));
+        for (Auteur auteur : laut) {
+            if (!o.getLauteurs().contains(auteur)) {
+                o.addAuteur(auteur);
+                System.out.println("Auteur '" + auteur.getNom() + " " + auteur.getPrenom() + "' ajouté à l'ouvrage.");
+            }
+        }
     }
 
-       private void gestAuteurs() {
-        System.out.println("nom ");
-        String nom=sc.nextLine();
-        System.out.println("prénom ");
-        String prenom=sc.nextLine();
-        System.out.println("nationalité");
-        String nat=sc.nextLine();
-        Auteur a  = new Auteur(nom,prenom,nat);
+    private void gestAuteurs() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Nom : ");
+        String nom = sc.nextLine();
+        System.out.println("Prénom : ");
+        String prenom = sc.nextLine();
+        System.out.println("Nationalité : ");
+        String nat = sc.nextLine();
+        Auteur a = new Auteur(nom, prenom, nat);
         laut.add(a);
-        System.out.println("écrivain créé");
-        int choix = choixListe(louv);
-        a.addOuvrage(louv.get(choix-1));
-        //TODO attribuer ouvrages par boucle
-        // les ouvrages sont triés par ordre de titre
-        // ne pas proposer un ouvrage déjà présent dans la liste des ouvrages de cet auteur
+        System.out.println("Écrivain créé avec succès.");
+
+        Collections.sort(louv, Comparator.comparing(Ouvrage::getTitre));
+
+        System.out.println("Attribution des ouvrages à l'écrivain :");
+        for (Ouvrage o : louv) {
+            if (!a.getLouvrage().contains(o)) {
+                System.out.println("Voulez-vous attribuer l'ouvrage '" + o.getTitre() + "' à cet écrivain ? (o/n)");
+                char choix = sc.next().charAt(0);
+                if (choix == 'o') {
+                    a.addOuvrage(o);
+                    System.out.println("Ouvrage attribué avec succès.");
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -287,5 +367,5 @@ public class Gestion {
         g.menu();
     }
 
-  
+
 }
