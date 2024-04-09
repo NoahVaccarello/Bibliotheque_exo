@@ -1,4 +1,4 @@
-package bibliotheque.metier;
+/*package bibliotheque.metier;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -94,4 +94,4 @@ public class Location {
     public void enregistrerRetour(){
        if(dateRestitution==null) dateRestitution=LocalDate.now();//test sur nul pour éviter d'enregistrer retour 2 fois
     }
-}
+}*/
