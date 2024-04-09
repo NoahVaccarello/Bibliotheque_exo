@@ -10,6 +10,7 @@ public class Auteur {
     private String nationalite;
     private Set<Ouvrage> louvrage = new HashSet<>();
 
+
     public Auteur(String nom, String prenom, String nationalite) {
         this.nom = nom;
         this.prenom = prenom;
@@ -44,6 +45,7 @@ public class Auteur {
     public Set<Ouvrage> getLouvrage() {
         return louvrage;
     }
+
     public void setLouvrage(Set<Ouvrage> louvrage) {
         this.louvrage = louvrage;
     }
