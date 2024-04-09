@@ -137,7 +137,7 @@ public class Gestion {
         choix = choixListe(llect);
         if (choix == 0) return;
         Lecteur lec = llect.get(choix - 1);
-        //LOCATIONS(lec, ex)); probleme surligner en rouge
+        //LOCATIONS(lec, ex)); probleme surligner en rouge //todo
     }
 
     private void gestLecteurs() {
