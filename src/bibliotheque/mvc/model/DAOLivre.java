@@ -21,6 +21,6 @@ public abstract class DAOLivre extends Subject {
     public abstract List<Livre> listerLivre(TypeLivre tl);
 
     public List<Livre> getNotification(){
-        return getAll();
+        return getAll ();
     }
 }

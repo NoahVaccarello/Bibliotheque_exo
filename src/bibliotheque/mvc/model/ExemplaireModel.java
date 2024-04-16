@@ -44,6 +44,6 @@ public class ExemplaireModel extends DAOExemplaire {
 
     @Override
     public List<Exemplaire> getAll() {
-        return ldatas;
+        return ldatas ;
     }
 }

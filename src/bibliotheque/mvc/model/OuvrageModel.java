@@ -22,7 +22,7 @@ public class OuvrageModel extends DAOOuvrage {
     }
 
     @Override
-    public boolean remove(Ouvrage elt) {
+    public boolean remove(Ouvrage elt ) {
         boolean ok = ldatas.remove(elt);
         notifyObservers();
         return ok;

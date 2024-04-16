@@ -18,6 +18,6 @@ public abstract class DAOExemplaire extends Subject {
     public abstract List<Exemplaire> getAll();
 
     public List<Exemplaire> getNotification(){
-        return getAll();
+        return getAll ();
     }
 }

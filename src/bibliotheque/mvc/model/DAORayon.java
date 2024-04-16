@@ -21,6 +21,6 @@ public abstract class DAORayon extends Subject {
     public abstract List<Rayon> getAll();
 
     public List<Rayon> getNotification(){
-        return getAll();
+        return getAll ();
     }
 }

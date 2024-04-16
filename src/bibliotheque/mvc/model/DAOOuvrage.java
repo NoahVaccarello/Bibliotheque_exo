@@ -22,6 +22,6 @@ public abstract class DAOOuvrage extends Subject {
     public abstract Set<Auteur> listerAuteurs(Ouvrage o);
 
     public List<Ouvrage> getNotification(){
-        return getAll();
+        return getAll ();
     }
 }

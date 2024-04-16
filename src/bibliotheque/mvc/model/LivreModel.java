@@ -28,7 +28,7 @@ public class LivreModel extends DAOLivre {
     }
 
     @Override
-    public Livre update(Livre elt) {
+    public Livre update(Livre elt ) {
         int p = ldatas.indexOf(elt);
         if (p < 0) return null;
         ldatas.set(p, elt);

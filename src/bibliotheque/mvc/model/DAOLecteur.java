@@ -21,6 +21,6 @@ public abstract class DAOLecteur extends Subject {
     public abstract List<Lecteur> getAll();
 
     public List<Lecteur> getNotification(){
-        return getAll();
+        return getAll ();
     }
 }

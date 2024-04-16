@@ -64,6 +64,6 @@ public class AuteurModel extends DAOAuteur {
 
     @Override
     public List<Ouvrage> listerOuvrages(Auteur a, String genre) {
-        return a.listerOuvrages(genre);
+        return a.listerOuvrages (genre);
     }
 }

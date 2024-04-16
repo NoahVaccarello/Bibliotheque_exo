@@ -30,6 +30,6 @@ public abstract class DAOAuteur extends Subject {
     public abstract List<Ouvrage> listerOuvrages(Auteur a, String genre);
 
     public List<Auteur> getNotification(){
-        return getAll();
+        return getAll ();
     }
 }

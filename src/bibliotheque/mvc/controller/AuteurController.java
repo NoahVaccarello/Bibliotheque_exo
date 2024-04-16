@@ -53,6 +53,6 @@ public class AuteurController {
     }
 
     public List<Ouvrage> listerOuvrages(Auteur a, String genre) {
-       return model.listerOuvrages(a,genre);
+       return model.listerOuvrages (a,genre);
     }
 }
