@@ -1,17 +1,19 @@
-    package bibliotheque.mvc.model;
+package bibliotheque.mvc.model;
 
+import bibliotheque.metier.Auteur;
 import bibliotheque.metier.Exemplaire;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExemplaireModel extends DAOExemplaire {
-
     private List<Exemplaire> ldatas = new ArrayList<>();
 
+
+
     @Override
-    public Exemplaire add(Exemplaire elt) {
-        boolean present = ldatas.contains(elt);
+    public Exemplaire add( Exemplaire elt) {
+        boolean present =ldatas.contains(elt);
         if (!present) {
             ldatas.add(elt);
             notifyObservers();
@@ -20,7 +22,7 @@ public class ExemplaireModel extends DAOExemplaire {
     }
 
     @Override
-    public boolean remove(Exemplaire elt) {
+    public boolean remove( Exemplaire elt) {
         boolean ok = ldatas.remove(elt);
         notifyObservers();
         return ok;
@@ -44,6 +46,6 @@ public class ExemplaireModel extends DAOExemplaire {
 
     @Override
     public List<Exemplaire> getAll() {
-        return ldatas ;
+        return ldatas;
     }
 }
