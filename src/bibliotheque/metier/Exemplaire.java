@@ -1,12 +1,8 @@
 package bibliotheque.metier;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import static bibliotheque.gestion.Gestion.LOCATIONS;
+import static bibliotheque.gestion.GestionOld.LOCATIONS;
 
 public class Exemplaire {
 
@@ -99,38 +95,9 @@ public class Exemplaire {
         if(lecteurActuel()!=null) System.out.println("envoi de "+mail+ " à "+lecteurActuel().getMail());
         else System.out.println("aucune location en cours");
     }
-    /*public void envoiMailLecteurs(Mail mail){
-        List<Lecteur>ll=lecteurs();
-        if(ll.isEmpty()){
-            System.out.println("aucun lecteur enregistré");
-        }
-        else{
-            for(Lecteur l: ll){
-                System.out.println("envoi de "+mail+ " à "+l.getMail());
-            }
-        }
-    }
-
-    public boolean enRetard(){ //par retard on entend pas encore restitué et en retard
-        if(lloc.isEmpty()) return false;
-        Location l = lloc.get(lloc.size()-1); //la location en cours est la dernière  de la liste, sauf si elle est terminée
-        if(l.getDateRestitution()==null && l.getDateLocation().plusDays(ouvrage.njlocmax()).isAfter(LocalDate.now())) return true;
-        return false;
-    }
-
-    public int joursRetard(){
-        if(!enRetard()) return 0;
-        Location l = lloc.get(lloc.size()-1);//la location en cours est la dernière de la liste
-        LocalDate dateLim = l.getDateLocation().plusDays(ouvrage.njlocmax());
-        int njretard = (int)ChronoUnit.DAYS.between(dateLim, LocalDate.now());
-        return njretard;
-    }*/
 
 
     public boolean enLocation(){
         return LOCATIONS.get(this) !=null ;
     }
-
-
-
 }
