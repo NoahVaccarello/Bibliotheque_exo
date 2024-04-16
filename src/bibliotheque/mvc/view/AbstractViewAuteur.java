@@ -7,7 +7,7 @@ import bibliotheque.mvc.observer.Observer;
 import java.util.List;
 
 
-public abstract  class AbstractViewAuteur implements Observer {
+public abstract class AbstractViewAuteur implements Observer {
 
     protected AuteurController auteurController;
     protected List<Auteur> la;
@@ -20,9 +20,10 @@ public abstract  class AbstractViewAuteur implements Observer {
 
     public abstract void affList(List la);
 
-    public List<Auteur> getAll(){
+    public List<Auteur> getAll() {
         return la;
     }
+
     @Override
     public void update(List la) {
         this.la = la;
