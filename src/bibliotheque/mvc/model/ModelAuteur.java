@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class AuteurModel extends DAOAuteur {
+public  class ModelAuteur extends DAO<Auteur> implements DAOSpecialAuteur {
 
     private List<Auteur> ldatas = new ArrayList<>();
 
@@ -51,7 +51,6 @@ public class AuteurModel extends DAOAuteur {
     public List<Auteur> getAll() {
         return ldatas;
     }
-
     @Override
     public Set<Ouvrage> listerOuvrages(Auteur a) {
         return a.listerOuvrages();
@@ -64,6 +63,6 @@ public class AuteurModel extends DAOAuteur {
 
     @Override
     public List<Ouvrage> listerOuvrages(Auteur a, String genre) {
-        return a.listerOuvrages (genre);
+        return a.listerOuvrages(genre);
     }
 }

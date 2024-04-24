@@ -1,19 +1,19 @@
 package bibliotheque.mvc.model;
 
-import bibliotheque.metier.Auteur;
+import bibliotheque.metier.Exemplaire;
 import bibliotheque.metier.Ouvrage;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
-public class OuvrageModel extends DAOOuvrage {
-
+public class ModelOuvrage extends DAO<Ouvrage> implements DAOSpecialOuvrage{
     private List<Ouvrage> ldatas = new ArrayList<>();
 
+
     @Override
-    public Ouvrage add(Ouvrage elt) {
-        boolean present = ldatas.contains(elt);
+    public Ouvrage add( Ouvrage elt) {
+        boolean present =ldatas.contains(elt);
         if (!present) {
             ldatas.add(elt);
             notifyObservers();
@@ -22,7 +22,7 @@ public class OuvrageModel extends DAOOuvrage {
     }
 
     @Override
-    public boolean remove(Ouvrage elt ) {
+    public boolean remove( Ouvrage elt) {
         boolean ok = ldatas.remove(elt);
         notifyObservers();
         return ok;
@@ -40,7 +40,7 @@ public class OuvrageModel extends DAOOuvrage {
     @Override
     public Ouvrage read(Ouvrage rech) {
         int p = ldatas.indexOf(rech);
-        if (p < 0) return null;
+        if(p<0) return null;
         return ldatas.get(p);
     }
 
@@ -50,15 +50,22 @@ public class OuvrageModel extends DAOOuvrage {
     }
 
     @Override
-    public Set<Auteur> listerAuteurs(Ouvrage o) {
-        return Set.of();
+    public List<Exemplaire> listerExemplaire(Ouvrage o) {
+        return new ArrayList<>(o.listerExemplaires());
     }
-}
-/*
-    @Override
-    public Set<Auteur> listerAuteurs(Ouvrage o) {
-        return o.listerAuteurs();
-    }
-}
 
- */
+    @Override
+    public List<Exemplaire> listerExemplaire(Ouvrage o, boolean enLocation) {
+        List<Exemplaire> l = listerExemplaire(o);
+        Iterator<Exemplaire> it = l.iterator();
+        while(it.hasNext()){
+            if(it.next().enLocation()!=enLocation) it.remove();
+        }
+        return l;
+    }
+
+    @Override
+    public double amendeRetard(Ouvrage o,int nj) {
+        return o.amendeRetard(nj);
+    }
+}
